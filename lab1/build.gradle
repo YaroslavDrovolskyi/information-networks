@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'ua.drovolskyi.in'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(22)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web' // run in default embedded Tomcat container
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper' // to render JSP files
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // JSTL tags for JSP
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' // https://stackoverflow.com/a/64605853
+//    implementation 'javax.servlet:jstl:1.2' // JSTL tags for JSP (DOES NOT WORK)  https://github.com/jakartaee/tags/issues/141#issue-774464652
+
+    /*
+    providedRuntime - when dependency needed only during compilation. And we DON'T need to pack it in .WAR file,
+     because it will be provide by container
+
+    Guide about Spring and JSP: https://www.baeldung.com/spring-boot-jsp
+    */
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
