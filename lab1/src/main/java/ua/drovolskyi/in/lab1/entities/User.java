@@ -44,10 +44,24 @@ public class User {
     @Convert(converter = TrueFalseConverter.class)
     private Boolean isValid;
 
-
     public enum Role{
         OWNER,
         ADMIN,
         CUSTOMER
+    }
+
+
+    @Override
+    public String toString(){
+        return String.format("User{ID: %d, login: %s, name: %s, surname: %s, patronymic: %s, " +
+                        "phone number: %s, role: %s, is valid: %s}",
+                getId(),
+                getLogin(),
+                getName(),
+                getSurname(),
+                getPatronymic(),
+                getPhoneNumber(),
+                getRole().name(),
+                getIsValid().toString());
     }
 }

@@ -31,4 +31,15 @@ public class Book {
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    @Override
+    public String toString(){
+        return String.format("Book{ID: %d, isbn: %s, title: '%s', numberOfPages: %d, publishingYear: %d, quantity: %d}",
+                getId(),
+                String.valueOf(getIsbn()),
+                getTitle(),
+                getNumberOfPages(),
+                getPublishingYear(),
+                getQuantity());
+    }
 }

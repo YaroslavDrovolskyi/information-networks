@@ -35,4 +35,14 @@ public class BookOrder {
         SATISFIED, // customer took the book
         COMPLETED // customer returned the book
     }
+
+
+    @Override
+    public String toString(){
+        return String.format("BookOrder{ID: %d, Book ID: %d, Customer ID: %d, state: %s}",
+                getId(),
+                getBook() != null ? getBook().getId() : -1,
+                getCustomer() != null ? getCustomer().getId() : -1,
+                getState().name());
+    }
 }
