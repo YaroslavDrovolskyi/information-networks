@@ -14,6 +14,8 @@ public class BookController {
         model.addAttribute("book", "Some BOOK");
         return new ModelAndView("view-books"); // return a view template 'view-books'
         // Spring MVC will look for /WEB-INF/jsp/view-books.jsp file
+
+        // or can don't pass Model obejct. Also can firstly create ModelAndView and them addAtribute() to it
     }
 }
 

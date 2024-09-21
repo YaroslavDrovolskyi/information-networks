@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -29,13 +30,17 @@ dependencies {
     providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper' // to render JSP files
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // JSTL tags for JSP
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' // https://stackoverflow.com/a/64605853
-//    implementation 'javax.servlet:jstl:1.2' // JSTL tags for JSP (DOES NOT WORK)  https://github.com/jakartaee/tags/issues/141#issue-774464652
+
+    implementation 'org.projectlombok:lombok:1.18.34'
+
+    implementation 'org.postgresql:postgresql'
+
 
     /*
     providedRuntime - when dependency needed only during compilation. And we DON'T need to pack it in .WAR file,
      because it will be provide by container
 
-    Guide about Spring and JSP: https://www.baeldung.com/spring-boot-jsp
+    Guide about Spring and JSP, and its dependencies: https://www.baeldung.com/spring-boot-jsp
     */
 }
 
