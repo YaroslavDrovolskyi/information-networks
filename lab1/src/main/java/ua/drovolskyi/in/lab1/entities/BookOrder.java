@@ -25,12 +25,12 @@ public class BookOrder {
     @JoinColumn(name = "customer_id")
     private User customer; // customer who ordered the book
 
-    @Column(name="state", nullable=false, length=15)
+    @Column(name="status", nullable=false, length=15)
     @Enumerated(EnumType.STRING)
-    private State state;
+    private Status status;
 
 
-    public static enum State{
+    public static enum Status {
         NEW, // customer created order
         SATISFIED, // customer took the book
         COMPLETED // customer returned the book
@@ -39,10 +39,10 @@ public class BookOrder {
 
     @Override
     public String toString(){
-        return String.format("BookOrder{ID: %d, Book ID: %d, Customer ID: %d, state: %s}",
+        return String.format("BookOrder{ID: %d, Book ID: %d, Customer ID: %d, status: %s}",
                 getId(),
                 getBook() != null ? getBook().getId() : -1,
                 getCustomer() != null ? getCustomer().getId() : -1,
-                getState().name());
+                getStatus().name());
     }
 }

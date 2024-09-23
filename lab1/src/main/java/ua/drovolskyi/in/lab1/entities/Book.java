@@ -17,11 +17,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "isbn", nullable = true, length=13)
+    @Column(name = "isbn", nullable = true, length=20)
     private String isbn;
 
     @Column(name = "title", nullable = false, length=50)
     private String title;
+
+    @Column(name = "authors", nullable = false, length=100)
+    private String authors;
 
     @Column(name = "number_of_pages", nullable = false)
     private Integer numberOfPages;

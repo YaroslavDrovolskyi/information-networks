@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
     List<User> findAllByOrderByIdAsc();
-    User findByRole(User.Role role);
+    List<User> findAllByRole(User.Role role);
 }
