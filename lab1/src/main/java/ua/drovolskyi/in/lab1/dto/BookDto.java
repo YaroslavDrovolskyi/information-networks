@@ -17,7 +17,7 @@ import lombok.Setter;
 public class BookDto {
     private Long id;
 
-    @Size(min = 10, max = 20, message = "ISBN should have length from 10 to 20")
+    @Size(max = 20, message = "ISBN should have max length = 20")
     private String isbn;
 
     @NotBlank(message = "Title can't be blank")
