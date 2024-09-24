@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>ISBN</b>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Title</b>
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Authors</b>
             </div>
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Number of pages</b>
             </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Publishing year</b>
             </div>
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Quantity</b>
             </div>
@@ -81,9 +81,21 @@
                     ${book.quantity}
             </div>
         </div>
+
+        <div class="row justify-content-center mt-3 mb-5">
+            <form action="${pageContext.request.contextPath}/bookOrder/create"
+                  method="POST" id="createBookOrderForm" role="form">
+                <div class="form-group col-xs-5 text-center">
+                    <input type="hidden" id="bookId" name="bookId"
+                           value="${book.id}" />
+
+                    <button type="submit" class="btn btn-info" value="Create">Make order!</button>
+                </div>
+            </form>
+        </div>
     </c:if>
 </div>
 
+
 </body>
 </html>
-

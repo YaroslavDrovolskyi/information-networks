@@ -13,7 +13,7 @@
 <body>
 
 <div class="container mt-5">
-    <h1 class="text-center mb-3">All books</h1>
+    <h1 class="text-center mb-3">Create book</h1>
 
     <form action="${pageContext.request.contextPath}/book/create"
           method="POST" id="createBookForm" role="form">

@@ -19,7 +19,7 @@
     </c:if>
     <c:if test="${not empty user}">
         <%-- Print propertiees of user object --%>
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>ID</b>
             </div>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Login</b>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Name</b>
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Surname</b>
             </div>
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Patronymic</b>
             </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Phone Number</b>
             </div>
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Role</b>
             </div>
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center"}>
+        <div class="row justify-content-center">
             <div class="col text-end">
                 <b>Is allowed to login</b>
             </div>
