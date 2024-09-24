@@ -30,8 +30,8 @@ public class BookController {
     }
 
 
-    @GetMapping("/book")
-    public ModelAndView getBook(@RequestParam(name="id") Long id){
+    @GetMapping("/book/{id}")
+    public ModelAndView getBook(@PathVariable(name="id") Long id){
         // get book
         Book book = null;
         try{
@@ -45,6 +45,7 @@ public class BookController {
 
         // return .jsp with result
         ModelAndView modelAndView = new ModelAndView("view-book"); // /WEB-INF/jsp/view-book.jsp
+        modelAndView.addObject("requestedBookId", id);
         modelAndView.addObject("book", bookDto); // book object will be accessible in .jsp-file
         return modelAndView;
     }
@@ -57,7 +58,7 @@ public class BookController {
                 .toList();
 
         // return .jsp with result
-        ModelAndView modelAndView = new ModelAndView("view-all-books"); // /WEB-INF/jsp/view-all-book.jsp
+        ModelAndView modelAndView = new ModelAndView("view-all-books"); // /WEB-INF/jsp/view-all-books.jsp
         modelAndView.addObject("books", booksDto);
         return modelAndView;
     }
@@ -71,7 +72,7 @@ public class BookController {
     public ModelAndView createBook(@Valid BookDto createBookDto){
         Book createdBook = bookService.createBook(createBookDto);
 
-        return new ModelAndView(String.format("redirect:/book?id=%d", createdBook.getId()));
+        return new ModelAndView(String.format("redirect:/book/%d", createdBook.getId()));
     }
 
 }

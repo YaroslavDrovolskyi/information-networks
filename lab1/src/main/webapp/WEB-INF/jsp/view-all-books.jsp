@@ -33,7 +33,7 @@
             <c:forEach var="book" items="${books}">
                 <tr>
                     <td>
-                        <a href="${pageContext.request.contextPath}/book?id=${book.id}">${book.id}</a>
+                        <a href="${pageContext.request.contextPath}/book/${book.id}">${book.id}</a>
                     </td>
                     <td>${book.isbn}</td>
                     <td>${book.title}</td>

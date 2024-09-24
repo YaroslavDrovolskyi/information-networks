@@ -23,5 +23,5 @@ public class UserDto {
     private String patronymic;
     private String phoneNumber;
     private User.Role role;
-    private Boolean isValid;
+    private Boolean isAllowedToLogin;
 }

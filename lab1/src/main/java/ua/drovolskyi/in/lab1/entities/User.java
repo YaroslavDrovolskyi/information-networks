@@ -40,9 +40,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "is_valid", nullable = false)
+    @Column(name = "is_allowed_to_login", nullable = false)
     @Convert(converter = TrueFalseConverter.class)
-    private Boolean isValid;
+    private Boolean isAllowedToLogin;
 
     public enum Role{
         OWNER,
@@ -54,7 +54,7 @@ public class User {
     @Override
     public String toString(){
         return String.format("User{ID: %d, login: %s, name: %s, surname: %s, patronymic: %s, " +
-                        "phone number: %s, role: %s, is valid: %s}",
+                        "phone number: %s, role: %s, is allowed to login: %s}",
                 getId(),
                 getLogin(),
                 getName(),
@@ -62,6 +62,6 @@ public class User {
                 getPatronymic(),
                 getPhoneNumber(),
                 getRole().name(),
-                getIsValid().toString());
+                getIsAllowedToLogin().toString());
     }
 }

@@ -43,7 +43,7 @@
             <div class="row mb-3">
                 <label class="col-2 text-end">Number of pages</label>
                 <input name="numberOfPages" type="number" required
-                       min="1" max="10000000" step="1" value="1" class="form-control col"/>
+                       min="1" max="100000" step="1" value="1" class="form-control col"/>
             </div>
 
             <div class="row mb-3">

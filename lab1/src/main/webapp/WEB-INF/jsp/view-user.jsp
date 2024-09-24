@@ -7,80 +7,90 @@
 
 <html>
 <head>
-    <title>Book</title>
+    <title>User</title>
 </head>
 <body>
 
 <div class="container mt-5">
-    <h1 class="text-center mb-3">Book</h1>
+    <h1 class="text-center mb-3">User</h1>
 
-    <c:if test="${empty book}">
-        <p class="text-center">Book with ID = ${requestedBookId} does not exist</p>
+    <c:if test="${empty user}">
+        <p class="text-center">User with ID = ${requestedUserId} does not exist</p>
     </c:if>
-    <c:if test="${not empty book}">
-        <%-- Print propertiees of book object --%>
+    <c:if test="${not empty user}">
+        <%-- Print propertiees of user object --%>
         <div class="row justify-content-center"}>
             <div class="col text-end">
                 <b>ID</b>
             </div>
             <div class="col">
-                    ${book.id} <%-- Attribute, that was passed from backend --%>
+                    ${user.id} <%-- Attribute, that was passed from backend --%>
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>ISBN</b>
+                <b>Login</b>
             </div>
             <div class="col">
-                    ${book.isbn}
+                    ${user.login}
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>Title</b>
+                <b>Name</b>
             </div>
             <div class="col">
-                    ${book.title}
+                    ${user.name}
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>Authors</b>
+                <b>Surname</b>
             </div>
             <div class="col">
-                    ${book.authors}
+                    ${user.surname}
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>Number of pages</b>
+                <b>Patronymic</b>
             </div>
             <div class="col">
-                    ${book.numberOfPages}
+                    ${user.patronymic}
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>Publishing year</b>
+                <b>Phone Number</b>
             </div>
             <div class="col">
-                    ${book.publishingYear}
+                    ${user.phoneNumber}
             </div>
         </div>
 
         <div class="row justify-content-center"}>
             <div class="col text-end">
-                <b>Quantity</b>
+                <b>Role</b>
             </div>
             <div class="col">
-                    ${book.quantity}
+                    ${user.role}
             </div>
         </div>
+
+        <div class="row justify-content-center"}>
+            <div class="col text-end">
+                <b>Is allowed to login</b>
+            </div>
+            <div class="col">
+                    ${user.isAllowedToLogin}
+            </div>
+        </div>
+
     </c:if>
 </div>
 
