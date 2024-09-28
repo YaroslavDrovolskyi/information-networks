@@ -3,7 +3,6 @@ package ua.drovolskyi.in.lab1.services;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.drovolskyi.in.lab1.dto.BookOrderDto;
 import ua.drovolskyi.in.lab1.dto.ChangeBookOrderStatusDto;
 import ua.drovolskyi.in.lab1.entities.Book;
 import ua.drovolskyi.in.lab1.entities.BookOrder;
@@ -60,22 +59,22 @@ public class BookOrderService {
 
 
     @Transactional
-    public BookOrder createBookOrder(BookOrderDto bookOrderDto){
+    public BookOrder createBookOrder(Long bookId, Long customerId){
         // get customer
-        User customer = userRepository.findById(bookOrderDto.getCustomerId()).orElse(null);
+        User customer = userRepository.findById(customerId).orElse(null);
         if(customer == null){
             throw new ResourceDoesNotExistException(
-                    String.format("User with ID=%d does not exist", bookOrderDto.getCustomerId()));
+                    String.format("User with ID=%d does not exist", customerId));
         }
         if(customer.getRole() != User.Role.CUSTOMER){
             throw new IllegalArgumentException("Only CUSTOMER can create BookOrder");
         }
 
         // get book
-        Book book = bookRepository.findById(bookOrderDto.getBookId()).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
         if(book == null){
             throw new ResourceDoesNotExistException(
-                    String.format("Book with ID=%d does not exist", bookOrderDto.getBookId()));
+                    String.format("Book with ID=%d does not exist", bookId));
         }
 
         // create BookOrder
@@ -90,23 +89,44 @@ public class BookOrderService {
         return bookOrder;
     }
 
-
+    // when user take the book
+    // current status can be only NEW
     @Transactional
-    public BookOrder changeBookOrderStatus(ChangeBookOrderStatusDto changeBookOrderStatusDto){
-        // get bookOrder
-        BookOrder bookOrder = bookOrderRepository.findById(changeBookOrderStatusDto.getBookOrderId()).orElse(null);
-        if(bookOrder == null){
-            throw new ResourceDoesNotExistException(
-                    String.format("BookOrder with ID=%d does not exist",
-                            changeBookOrderStatusDto.getBookOrderId()));
+    public void satisfyBookOrder(Long bookOrderId){
+        BookOrder bookOrder = getBookOrderById(bookOrderId);
+        if(bookOrder.getStatus() != BookOrder.Status.NEW){ // check if status == NEW
+            throw new IllegalArgumentException(
+                    "Can satisfy BookOrder only with NEW status");
         }
 
-        bookOrder.setStatus(changeBookOrderStatusDto.getNewStatus());
+        Book book = bookOrder.getBook();
+        if(book.getQuantity() <= 0){ // check if book quantity is enough (i.e. >0) to satisfy BookOrder
+            throw new IllegalArgumentException(
+                    "Can't satisfy BookOrder, because book quantity is = 0");
+        }
 
+        // satisfy BookOrder and decrement quantity of book
+        bookOrder.setStatus(BookOrder.Status.SATISFIED);
         bookOrderRepository.save(bookOrder);
-
-        return bookOrder;
+        book.setQuantity(book.getQuantity() - 1);
+        bookRepository.save(book);
     }
 
+    // when user returns the book
+    // current status can be only SATISFIED
+    @Transactional
+    public void completeBookOrder(Long bookOrderId){
+        BookOrder bookOrder = getBookOrderById(bookOrderId);
+        if(bookOrder.getStatus() != BookOrder.Status.SATISFIED){ // check if status == SATISFIED
+            throw new IllegalArgumentException(
+                    "Can satisfy BookOrder only with SATISFIED status");
+        }
+        Book book = bookOrder.getBook();
 
+        // complete BookOrder and increment quantity of book
+        bookOrder.setStatus(BookOrder.Status.COMPLETED);
+        bookOrderRepository.save(bookOrder);
+        book.setQuantity(book.getQuantity() + 1);
+        bookRepository.save(book);
+    }
 }

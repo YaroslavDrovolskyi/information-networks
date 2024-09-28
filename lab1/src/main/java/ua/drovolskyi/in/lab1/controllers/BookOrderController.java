@@ -1,5 +1,6 @@
 package ua.drovolskyi.in.lab1.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,7 +11,10 @@ import ua.drovolskyi.in.lab1.dto.BookOrderDto;
 import ua.drovolskyi.in.lab1.dto.CreateBookOrderDto;
 import ua.drovolskyi.in.lab1.entities.Book;
 import ua.drovolskyi.in.lab1.entities.BookOrder;
+import ua.drovolskyi.in.lab1.entities.User;
+import ua.drovolskyi.in.lab1.errors.AccessDeniedException;
 import ua.drovolskyi.in.lab1.errors.ResourceDoesNotExistException;
+import ua.drovolskyi.in.lab1.services.AuthenticationService;
 import ua.drovolskyi.in.lab1.services.BookOrderService;
 import ua.drovolskyi.in.lab1.services.BookService;
 
@@ -18,22 +22,39 @@ import java.util.List;
 
 @RestController
 public class BookOrderController {
+    private AuthenticationService authService;
     private BookOrderService bookOrderService;
     private final BookOrderToDtoConverter bookOrderToDtoConverter = new BookOrderToDtoConverter();
 
-    public BookOrderController(BookOrderService bookOrderService){
+    public BookOrderController(BookOrderService bookOrderService, AuthenticationService authService){
         this.bookOrderService = bookOrderService;
+        this.authService = authService;
     }
 
 
     @GetMapping("/bookOrder/{id}")
-    public ModelAndView getBookOrder(@PathVariable(name="id") Long id){
+    public ModelAndView getBookOrder(@PathVariable(name="id") Long id,
+                                     HttpSession session){
+        if(!authService.isAuthenticatedUser(session)) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = authService.getUserOfSession(session);
+
         // get bookOrder
         BookOrder bookOrder = null;
         try{
             bookOrder = bookOrderService.getBookOrderById(id);
         } catch(ResourceDoesNotExistException e){ // if book does not exist
             // nothing to do
+        }
+
+        // check if customer accesses own BookOrder
+        // OWNER and ADMIN don't have such restriction
+        if(bookOrder != null){
+            if(user.getRole() == User.Role.CUSTOMER &&
+                    bookOrder.getCustomer().getId().equals(user.getId())){
+                throw new AccessDeniedException("Customer can access only own BookOrder");
+            }
         }
 
         // convert bookOrder to DTO
@@ -47,11 +68,27 @@ public class BookOrderController {
     }
 
     @GetMapping("/bookOrders")
-    public ModelAndView getAllBookOrders() {
-        List<BookOrderDto> bookOrdersDto = bookOrderService.getAllBookOrders()
-                .stream()
-                .map(bookOrderToDtoConverter::convert)
-                .toList();
+    public ModelAndView getAllBookOrders(HttpSession session) {
+        if(!authService.isAuthenticatedUser(session)) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = authService.getUserOfSession(session);
+
+        // get book orders
+        List<BookOrderDto> bookOrdersDto = null;
+        if(user.getRole() == User.Role.CUSTOMER){ // if user is CUSTOMER, it will receive only own BookOrders
+            bookOrdersDto = bookOrderService.getAllBookOrdersByCustomer(user.getId())
+                    .stream()
+                    .map(bookOrderToDtoConverter::convert)
+                    .toList();
+        }
+        else{ // user is ADMIn or OWNER
+            bookOrdersDto = bookOrderService.getAllBookOrders()
+                    .stream()
+                    .map(bookOrderToDtoConverter::convert)
+                    .toList();
+        }
+
 
         // return .jsp with result
         ModelAndView modelAndView = new ModelAndView("view-all-bookOrders"); // /WEB-INF/jsp/view-all-bookOrders.jsp
@@ -61,13 +98,47 @@ public class BookOrderController {
 
     // customer ID will be taken from authorization info
     @PostMapping("/bookOrder/create")
-    public ModelAndView createBookOrder(CreateBookOrderDto dto){
-        BookOrder createdBookOrder = bookOrderService.createBookOrder(
-                new BookOrderDto(null, dto.getBookId(), 1L, null)
-        );
-//////////////////////////////////////////////////////////////////////// CUSTOMER ID IS HARDCODED
+    public ModelAndView createBookOrder(@Valid CreateBookOrderDto dto,
+                                        HttpSession session){
+        if(authService.isAuthenticatedUser(session)){
+            User user = authService.getUserOfSession(session);
+            if(authService.hasPermission(user, List.of(User.Role.CUSTOMER))){
+                BookOrder createdBookOrder = bookOrderService.createBookOrder(
+                        dto.getBookId(),
+                        user.getId()
+                );
+                return new ModelAndView(String.format("redirect:/bookOrder/%d", createdBookOrder.getId()));
+            }
+        }
+        return new ModelAndView("redirect:/login");
+    }
 
-        return new ModelAndView(String.format("redirect:/bookOrder/%d", createdBookOrder.getId()));
+    // book quantity--
+    @PostMapping("/bookOrder/{id}/satisfy")
+    public ModelAndView satisfyBookRequest(@PathVariable(name="id") Long id,
+                                           HttpSession session){
+        if(authService.isAuthenticatedUser(session)){
+            User user = authService.getUserOfSession(session);
+            if(authService.hasPermission(user, List.of(User.Role.ADMIN))){
+                bookOrderService.satisfyBookOrder(id);
+                return new ModelAndView(String.format("redirect:/bookOrder/%d", id));
+            }
+        }
+        return new ModelAndView("redirect:/login");
+    }
+
+    // book quantity++
+    @PostMapping("/bookOrder/{id}/complete")
+    public ModelAndView completeBookRequest(@PathVariable(name="id") Long id,
+                                           HttpSession session){
+        if(authService.isAuthenticatedUser(session)){
+            User user = authService.getUserOfSession(session);
+            if(authService.hasPermission(user, List.of(User.Role.ADMIN))){
+                bookOrderService.completeBookOrder(id);
+                return new ModelAndView(String.format("redirect:/bookOrder/%d", id));
+            }
+        }
+        return new ModelAndView("redirect:/login");
     }
 
 

@@ -3,7 +3,6 @@ package ua.drovolskyi.in.lab1.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,8 +10,6 @@ import ua.drovolskyi.in.lab1.dto.AuthenticationDto;
 import ua.drovolskyi.in.lab1.dto.UserDto;
 import ua.drovolskyi.in.lab1.entities.User;
 import ua.drovolskyi.in.lab1.services.AuthenticationService;
-
-import java.util.List;
 
 @RestController
 @SessionAttributes({"user"})
@@ -26,7 +23,7 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public ModelAndView getLoginPage(HttpSession session, SessionStatus status){
-        Boolean isAuthenticated = authenticationService.isAuthenticated(session);
+        Boolean isAuthenticated = authenticationService.isAuthenticatedUser(session);
 
         if(isAuthenticated){ // if already authenticated user goes to /login page
             return new ModelAndView("redirect:/");
@@ -45,9 +42,10 @@ public class AuthenticationController {
                 "+380", User.Role.CUSTOMER, true);
         session.setAttribute("user", userDto);
 
+        return new ModelAndView("redirect:/"); /////////////////////////////////////
         //////////////////////////////////// NEED TO CHECK if login and password from authenticationDto are correct,
-        // and then add if correct write userDto inti sessioan attribute
-        // if not correct then redicrec to GET login with error prevErrorMessage
+        // and then add if correct write userDto inti session attribute
+        // if not correct then redicrect to GET login with error prevErrorMessage
     }
 
 
