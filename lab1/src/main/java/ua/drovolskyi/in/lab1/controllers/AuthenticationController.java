@@ -9,10 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.drovolskyi.in.lab1.dto.AuthenticationDto;
 import ua.drovolskyi.in.lab1.dto.UserDto;
 import ua.drovolskyi.in.lab1.entities.User;
+import ua.drovolskyi.in.lab1.errors.AuthException;
 import ua.drovolskyi.in.lab1.services.AuthenticationService;
 
 @RestController
-@SessionAttributes({"user"})
+@SessionAttributes({"authenticatedUser"})
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;
@@ -34,20 +35,18 @@ public class AuthenticationController {
 
     // method that is invoked when user submit the 'login form'
     @PostMapping("/login")
-    public ModelAndView login(@Valid AuthenticationDto authenticationDto,
-                              HttpSession session, SessionStatus status){
-
-        UserDto userDto = new UserDto(10L, "login",
-                "name", "surname", "patronymic",
-                "+380", User.Role.CUSTOMER, true);
-        session.setAttribute("user", userDto);
-
-        return new ModelAndView("redirect:/"); /////////////////////////////////////
-        //////////////////////////////////// NEED TO CHECK if login and password from authenticationDto are correct,
-        // and then add if correct write userDto inti session attribute
-        // if not correct then redicrect to GET login with error prevErrorMessage
+    public ModelAndView login(@Valid AuthenticationDto authDto,
+                              HttpSession session){
+        try{
+            authenticationService.authenticateUser(authDto, session);
+            return new ModelAndView("redirect:/");
+        }
+        catch(AuthException e) {
+            ModelAndView modelAndView = new ModelAndView("redirect:/login");
+            modelAndView.addObject("prevAuthAttemptError", e.getMessage());
+            return modelAndView;
+        }
     }
-
 
 
     /**
@@ -57,13 +56,24 @@ public class AuthenticationController {
      * @return
      */
     @GetMapping("/logout")
-    public ModelAndView logout(HttpSession httpsession, SessionStatus status){
+    public ModelAndView logout(HttpSession session, SessionStatus status){
         /* Mark the current handler's session processing as complete, allowing for cleanup of session attributes. */
         status.setComplete();
 
         /* Invalidates this session then unbinds any objects bound to it. */
-        httpsession.invalidate();
+        session.invalidate();
 
         return new ModelAndView("redirect:/");
+    }
+
+
+    @GetMapping("/register")
+    public ModelAndView getRegisterPage(HttpSession session){
+        Boolean isAuthenticated = authenticationService.isAuthenticatedUser(session);
+
+        if(isAuthenticated){ // if already authenticated user goes to /register page
+            return new ModelAndView("redirect:/");
+        }
+        return new ModelAndView("register");
     }
 }
