@@ -37,12 +37,12 @@
                     <td>
                         <a href="${pageContext.request.contextPath}/book/${book.id}">${book.id}</a>
                     </td>
-                    <td>${book.isbn}</td>
-                    <td>${book.title}</td>
-                    <td>${book.authors}</td>
-                    <td>${book.numberOfPages}</td>
-                    <td>${book.publishingYear}</td>
-                    <td>${book.quantity}</td>
+                    <td><c:out value="${book.isbn}"/></td>
+                    <td><c:out value="${book.title}"/></td>
+                    <td><c:out value="${book.authors}"/></td>
+                    <td><c:out value="${book.numberOfPages}"/></td>
+                    <td><c:out value="${book.publishingYear}"/></td>
+                    <td><c:out value="${book.quantity}"/></td>
                 </tr>
             </c:forEach>
         </table>

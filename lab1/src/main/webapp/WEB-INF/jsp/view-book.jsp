@@ -35,7 +35,7 @@
                 <b>ISBN</b>
             </div>
             <div class="col">
-                    ${book.isbn}
+                <c:out value="${book.isbn}"/>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                 <b>Title</b>
             </div>
             <div class="col">
-                    ${book.title}
+                <c:out value="${book.title}"/>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
                 <b>Authors</b>
             </div>
             <div class="col">
-                    ${book.authors}
+                <c:out value="${book.authors}"/>
             </div>
         </div>
 
@@ -62,7 +62,7 @@
                 <b>Number of pages</b>
             </div>
             <div class="col">
-                    ${book.numberOfPages}
+                <c:out value="${book.numberOfPages}"/>
             </div>
         </div>
 
@@ -71,7 +71,7 @@
                 <b>Publishing year</b>
             </div>
             <div class="col">
-                    ${book.publishingYear}
+                <c:out value="${book.publishingYear}"/>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
                 <b>Quantity</b>
             </div>
             <div class="col">
-                    ${book.quantity}
+                <c:out value="${book.quantity}"/>
             </div>
         </div>
 

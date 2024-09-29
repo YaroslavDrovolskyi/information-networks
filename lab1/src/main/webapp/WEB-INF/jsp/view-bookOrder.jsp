@@ -45,7 +45,7 @@
                 <b>Book quantity</b>
             </div>
             <div class="col">
-                ${book.quantity}
+                <c:out value="${book.quantity}"/>
             </div>
         </div>
 

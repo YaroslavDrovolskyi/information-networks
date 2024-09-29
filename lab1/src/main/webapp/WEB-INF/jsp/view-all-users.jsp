@@ -38,13 +38,13 @@
           <td>
             <a href="${pageContext.request.contextPath}/user/${user.id}">${user.id}</a>
           </td>
-          <td>${user.login}</td>
-          <td>${user.name}</td>
-          <td>${user.surname}</td>
-          <td>${user.patronymic}</td>
-          <td>${user.phoneNumber}</td>
-          <td>${user.role}</td>
-          <td>${user.isAllowedToLogin}</td>
+          <td><c:out value="${user.login}"/></td>
+          <td><c:out value="${user.name}"/></td>
+          <td><c:out value="${user.surname}"/></td>
+          <td><c:out value="${user.patronymic}"/></td>
+          <td><c:out value="${user.phoneNumber}"/></td>
+          <td><c:out value="${user.role}"/></td>
+          <td><c:out value="${user.isAllowedToLogin}"/></td>
         </tr>
       </c:forEach>
     </table>

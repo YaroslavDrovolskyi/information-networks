@@ -16,7 +16,7 @@
 
     <div class="container mt-5">
         <h1 class="text-center mb-3">Login</h1>
-        <p class="text-center mb-3">${prevAuthAttemptError}</p>
+        <p class="text-center mb-3"><c:out value="${prevAuthAttemptError}"/></p>
 
         <form action="${pageContext.request.contextPath}/login"
               method="POST" id="login" role="form">

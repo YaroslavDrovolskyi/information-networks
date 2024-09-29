@@ -20,7 +20,6 @@ public class Lab1Application {
 TODO:
 XSS attack protection
 add icon
-ERROR handler
 
 Errors to handle: AccessDeniedException, IllegalArfumentException
 

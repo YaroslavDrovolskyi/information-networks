@@ -35,7 +35,7 @@
                 <b>Login</b>
             </div>
             <div class="col">
-                    ${user.login}
+                <c:out value="${user.login}"/>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                 <b>Name</b>
             </div>
             <div class="col">
-                    ${user.name}
+                <c:out value="${user.name}"/>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
                 <b>Surname</b>
             </div>
             <div class="col">
-                    ${user.surname}
+                <c:out value="${user.surname}"/>
             </div>
         </div>
 
@@ -62,7 +62,7 @@
                 <b>Patronymic</b>
             </div>
             <div class="col">
-                    ${user.patronymic}
+                <c:out value="${user.patronymic}"/>
             </div>
         </div>
 
@@ -71,7 +71,7 @@
                 <b>Phone Number</b>
             </div>
             <div class="col">
-                    ${user.phoneNumber}
+                <c:out value="${user.phoneNumber}"/>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
                 <b>Role</b>
             </div>
             <div class="col">
-                    ${user.role}
+                <c:out value="${user.role}"/>
             </div>
         </div>
 
@@ -89,7 +89,7 @@
                 <b>Is allowed to login</b>
             </div>
             <div class="col">
-                    ${user.isAllowedToLogin}
+                <c:out value="${user.isAllowedToLogin}"/>
             </div>
         </div>
 

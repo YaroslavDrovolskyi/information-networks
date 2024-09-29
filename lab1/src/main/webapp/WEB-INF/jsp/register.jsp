@@ -16,7 +16,7 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-3">Registration</h1>
-    <p class="text-center mb-3">${prevRegisterAttemptError}</p>
+    <p class="text-center mb-3"><c:out value="${prevRegisterAttemptError}"/></p>
 
     <form action="${pageContext.request.contextPath}/register"
           method="POST" id="register" role="form">
