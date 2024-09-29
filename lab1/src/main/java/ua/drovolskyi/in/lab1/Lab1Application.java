@@ -18,11 +18,9 @@ public class Lab1Application {
 
 /*
 TODO:
-JSP for BookOrder satisfying and completion
 XSS attack protection
 Template UI items (top panel etc.)
 static web-pages ("about company" page (maybe with local images))
-add regex for phone number input on frontend
 add icon
 Logout - must be POST request
 

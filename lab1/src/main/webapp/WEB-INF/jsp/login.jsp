@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<jsp:include page="nav-bar.jsp" />
+
     <div class="container mt-5">
         <h1 class="text-center mb-3">Login</h1>
         <p class="text-center mb-3">${prevAuthAttemptError}</p>

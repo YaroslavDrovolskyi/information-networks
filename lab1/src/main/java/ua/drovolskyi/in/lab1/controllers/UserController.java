@@ -52,9 +52,9 @@ public class UserController {
 
         // check if customer accesses own user object
         // OWNER and ADMIN don't have such restriction
-        if(userOfSession.getRole() == User.Role.CUSTOMER &&
+        if((userOfSession.getRole() == User.Role.CUSTOMER || userOfSession.getRole() == User.Role.ADMIN) &&
                 !userOfSession.getId().equals(id)){
-            throw new AccessDeniedException("Customer can access only own User info");
+            throw new AccessDeniedException("You can access only own info");
         }
 
 
@@ -74,9 +74,8 @@ public class UserController {
             return new ModelAndView("redirect:/login");
         }
         User user = authService.getUserOfSession(session);
-        if(user.getRole() != User.Role.ADMIN &&
-                user.getRole() != User.Role.OWNER){
-            throw new AccessDeniedException("Customer can't access to list of all users");
+        if(user.getRole() != User.Role.OWNER){
+            throw new AccessDeniedException("You can't access to list of all users");
         }
 
 
