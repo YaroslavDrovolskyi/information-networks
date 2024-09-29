@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import ua.drovolskyi.in.lab1.dto.AuthenticationDto;
+import ua.drovolskyi.in.lab1.dto.RegistrationDto;
 import ua.drovolskyi.in.lab1.dto.UserDto;
 import ua.drovolskyi.in.lab1.entities.User;
 import ua.drovolskyi.in.lab1.errors.AuthException;
 import ua.drovolskyi.in.lab1.services.AuthenticationService;
 
 @RestController
-@SessionAttributes({"authenticatedUser"})
+@SessionAttributes({"authenticatedUser"}) // it is UserDto object
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;
@@ -23,7 +24,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(HttpSession session, SessionStatus status){
+    public ModelAndView getLoginPage(HttpSession session){
         Boolean isAuthenticated = authenticationService.isAuthenticatedUser(session);
 
         if(isAuthenticated){ // if already authenticated user goes to /login page
@@ -42,7 +43,7 @@ public class AuthenticationController {
             return new ModelAndView("redirect:/");
         }
         catch(AuthException e) {
-            ModelAndView modelAndView = new ModelAndView("redirect:/login");
+            ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("prevAuthAttemptError", e.getMessage());
             return modelAndView;
         }
@@ -51,11 +52,11 @@ public class AuthenticationController {
 
     /**
      * Finishes current session, and deletes associated attributes
-     * @param httpsession
+     * @param session
      * @param status
      * @return
      */
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ModelAndView logout(HttpSession session, SessionStatus status){
         /* Mark the current handler's session processing as complete, allowing for cleanup of session attributes. */
         status.setComplete();
@@ -63,7 +64,7 @@ public class AuthenticationController {
         /* Invalidates this session then unbinds any objects bound to it. */
         session.invalidate();
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/login");
     }
 
 
@@ -75,5 +76,36 @@ public class AuthenticationController {
             return new ModelAndView("redirect:/");
         }
         return new ModelAndView("register");
+    }
+
+
+    //
+
+    /**
+     * <p>Invokes when user submit the 'register' form.</p>
+     * <p>Registers new CUSTOMER user with given credentials, and authenticate this new user.
+     * After that, redirects to '/' endpoint.</p>
+     * <p>If some error occurred, redirects to '/register' page with error message</p>
+     *
+     * @param registerDto
+     * @param session
+     * @return
+     */
+    @PostMapping("/register")
+    public ModelAndView register(@Valid RegistrationDto registerDto,
+                              HttpSession session){
+        try{
+            authenticationService.registerUser(registerDto);
+            authenticationService.authenticateUser(
+                    new AuthenticationDto(registerDto.getLogin(), registerDto.getPassword()),
+                    session
+            );
+            return new ModelAndView("redirect:/");
+        }
+        catch(Exception e) {
+            ModelAndView modelAndView = new ModelAndView("register");
+            modelAndView.addObject("prevRegisterAttemptError", e.getMessage());
+            return modelAndView;
+        }
     }
 }

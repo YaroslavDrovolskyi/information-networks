@@ -18,13 +18,17 @@ public class Lab1Application {
 
 /*
 TODO:
-make registration (Service, Cotroller)
-JSP for login, registration, jsp for BookOrder satisfying and commplting
-Registration page also needs ""prevAttemptErrorr=r
++ make registration (Service, Controller)
+JSP for login, registration, jsp for BookOrder satisfying and completion
+Registration page also needs "prevAttemptError"
 XSS attack protection
 Template UI items (top panel etc.)
 static web-pages ("about company" page (maybe with local images))
-add regex for phone number input on frntend
+add regex for phone number input on frontend
+add icon
+Logout - must be POST request
+
+Error: not authenticated user to /users gives exception
 
  */
 

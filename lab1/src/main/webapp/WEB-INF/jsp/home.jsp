@@ -2,10 +2,15 @@
 <%@ page session="true" %>
 <html>
 <head>
-    <title>Main</title>
+    <title>Home</title>
 </head>
 <body>
-    <p>${sessionScope.user.id}</p>
-    <p>${sessionScope.user.phoneNumber}</p>
+    <p>${sessionScope.authenticatedUser.id}</p>
+    <p>${sessionScope.authenticatedUser.login}</p>
+    <p>${sessionScope.authenticatedUser.name}</p>
+    <p>${sessionScope.authenticatedUser.surname}</p>
+    <p>${sessionScope.authenticatedUser.patronymic}</p>
+    <p>${sessionScope.authenticatedUser.phoneNumber}</p>
+    <p>${sessionScope.authenticatedUser.role}</p>
 </body>
 </html>

@@ -111,7 +111,7 @@ public class AuthenticationService {
     public User registerUser(RegistrationDto dto){
         if(userRepository.findByLogin(dto.getLogin()).isPresent()){
             throw new IllegalArgumentException(
-                    String.format("User with login='%s' already exists", dto.getLogin()));
+                    String.format("User with login '%s' already exists", dto.getLogin()));
         }
 
         // create new user and save it to DB

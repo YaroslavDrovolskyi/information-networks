@@ -27,8 +27,10 @@ public class UserController {
     private AuthenticationService authService;
     private final UserToDtoConverter userToDtoConverter = new UserToDtoConverter();
 
-    public UserController(UserService userService){
+
+    public UserController(UserService userService, AuthenticationService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @GetMapping("/user/{id}")
