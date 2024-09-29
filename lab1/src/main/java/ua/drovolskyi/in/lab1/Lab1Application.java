@@ -19,10 +19,9 @@ public class Lab1Application {
 /*
 TODO:
 XSS attack protection
-Template UI items (top panel etc.)
 static web-pages ("about company" page (maybe with local images))
 add icon
-Logout - must be POST request
+ERROR handler
 
 Errors to handle: AccessDeniedException, IllegalArfumentException
 

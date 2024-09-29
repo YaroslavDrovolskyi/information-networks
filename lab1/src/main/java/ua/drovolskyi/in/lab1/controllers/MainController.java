@@ -16,4 +16,13 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView("home"); // /WEB-INF/jsp/home.jsp
         return modelAndView;
     }
+
+    
+    @GetMapping("/about")
+    public ModelAndView getAboutPage(){
+
+        // return .jsp with result
+        ModelAndView modelAndView = new ModelAndView("about"); // /WEB-INF/jsp/about.jsp
+        return modelAndView;
+    }
 }
