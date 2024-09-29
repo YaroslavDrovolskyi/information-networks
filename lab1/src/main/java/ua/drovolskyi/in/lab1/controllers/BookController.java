@@ -1,32 +1,30 @@
 package ua.drovolskyi.in.lab1.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.drovolskyi.in.lab1.converters.BookToDtoConverter;
 import ua.drovolskyi.in.lab1.dto.BookDto;
 import ua.drovolskyi.in.lab1.entities.Book;
-import ua.drovolskyi.in.lab1.entities.BookOrder;
 import ua.drovolskyi.in.lab1.entities.User;
+import ua.drovolskyi.in.lab1.errors.AccessDeniedException;
 import ua.drovolskyi.in.lab1.errors.ResourceDoesNotExistException;
-import ua.drovolskyi.in.lab1.repositories.BookOrderRepository;
-import ua.drovolskyi.in.lab1.repositories.BookRepository;
-import ua.drovolskyi.in.lab1.repositories.UserRepository;
+import ua.drovolskyi.in.lab1.services.AuthenticationService;
 import ua.drovolskyi.in.lab1.services.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@SessionAttributes({"authenticatedUser"}) // it is UserDto object
 public class BookController {
     private BookService bookService;
+    private AuthenticationService authService;
     private final BookToDtoConverter bookToDtoConverter = new BookToDtoConverter();
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthenticationService authService) {
         this.bookService = bookService;
+        this.authService = authService;
     }
 
 
@@ -64,17 +62,33 @@ public class BookController {
     }
 
     @GetMapping("/book/create")
-    public ModelAndView fetchCreateBookPage(){
+    public ModelAndView getCreateBookPage(HttpSession session){
+        if(!authService.isAuthenticatedUser(session)) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = authService.getUserOfSession(session);
+        if(user.getRole() != User.Role.ADMIN){
+            throw new AccessDeniedException("You can't create book!");
+        }
+
+
         return new ModelAndView("create-book");
     }
 
     @PostMapping("/book/create")
-    public ModelAndView createBook(@Valid BookDto createBookDto){
+    public ModelAndView createBook(@Valid BookDto createBookDto,
+                                   HttpSession session){
+        if(!authService.isAuthenticatedUser(session)) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = authService.getUserOfSession(session);
+        if(user.getRole() != User.Role.ADMIN){
+            throw new AccessDeniedException("You can't create book!");
+        }
+
         Book createdBook = bookService.createBook(createBookDto);
 
         return new ModelAndView(String.format("redirect:/book/%d", createdBook.getId()));
     }
 
 }
-
-// input model object (as seen in some guides) is unnecessary

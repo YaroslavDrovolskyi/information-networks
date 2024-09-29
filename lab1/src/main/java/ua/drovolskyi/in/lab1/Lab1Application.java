@@ -18,8 +18,7 @@ public class Lab1Application {
 
 /*
 TODO:
-+ make registration (Service, Controller)
-JSP for login, registration, jsp for BookOrder satisfying and completion
+JSP for BookOrder satisfying and completion
 XSS attack protection
 Template UI items (top panel etc.)
 static web-pages ("about company" page (maybe with local images))
@@ -27,7 +26,7 @@ add regex for phone number input on frontend
 add icon
 Logout - must be POST request
 
-Error: not authenticated user to /users gives exception
+Errors to handle: AccessDeniedException, IllegalArfumentException
 
  */
 
@@ -52,3 +51,5 @@ Attribute is attribute added in controller by model.addAttribute() method
  */
 
 // how to return .jsp: https://www.youtube.com/watch?v=BSPq2YgIwwE
+
+// In controller functions, input Model (or ModeAndView) object (as seen in some guides) is unnecessary

@@ -82,17 +82,19 @@
             </div>
         </div>
 
-        <div class="row justify-content-center mt-3 mb-5">
-            <form action="${pageContext.request.contextPath}/bookOrder/create"
-                  method="POST" id="createBookOrderForm" role="form">
-                <div class="form-group col-xs-5 text-center">
-                    <input type="hidden" id="bookId" name="bookId"
-                           value="${book.id}" />
+        <c:if test="${sessionScope.authenticatedUser.role == 'CUSTOMER'}"> <!-- Only CUSTOMER can create BookOrder -->
+            <div class="row justify-content-center mt-3 mb-5">
+                <form action="${pageContext.request.contextPath}/bookOrder/create"
+                      method="POST" id="createBookOrderForm" role="form">
+                    <div class="form-group col-xs-5 text-center">
+                        <input type="hidden" id="bookId" name="bookId"
+                               value="${book.id}" />
 
-                    <button type="submit" class="btn btn-info" value="Create">Make order!</button>
-                </div>
-            </form>
-        </div>
+                        <button type="submit" class="btn btn-success" value="Create">Make order!</button>
+                    </div>
+                </form>
+            </div>
+        </c:if>
     </c:if>
 </div>
 

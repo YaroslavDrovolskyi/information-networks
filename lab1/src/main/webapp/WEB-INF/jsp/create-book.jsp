@@ -53,9 +53,12 @@
                        value="<%=Year.now().getValue() %>" class="form-control col"/>
             </div>
 
-
-            <input type="submit" value="Create!" class="btn btn-success form-control mt-3"/>
-
+            <div class="row mb-3 d-flex align-items-center justify-content-center">
+                <div class="col-3 text-center">
+                    <input type="submit" value="Create!" class="btn btn-success form-control mt-3"/>
+                </div>
+            </div>
+            
         </div>
     </form>
 
