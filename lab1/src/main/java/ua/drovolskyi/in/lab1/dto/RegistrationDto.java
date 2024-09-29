@@ -26,6 +26,11 @@ public class RegistrationDto {
     @Pattern(regexp = "^\\S+$", message = "Password can't contain space character")
     private String password;
 
+    @NotBlank(message = "Password repeat can't be blank")
+    @Size(min = 8, max = 50, message = "Password repeat should have length from 8 to 50")
+    @Pattern(regexp = "^\\S+$", message = "Password repeat can't contain space character")
+    private String passwordRepeat; // password repeat that user enters into the form
+
     @NotBlank(message = "Name can't be blank")
     @Size(min = 2, max = 50, message = "Name should have length from 2 to 50")
     private String name;

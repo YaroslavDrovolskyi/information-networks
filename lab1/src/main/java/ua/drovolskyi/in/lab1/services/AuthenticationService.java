@@ -114,6 +114,10 @@ public class AuthenticationService {
                     String.format("User with login '%s' already exists", dto.getLogin()));
         }
 
+        if(!dto.getPassword().equals(dto.getPasswordRepeat())){
+            throw new IllegalArgumentException("Password and password repeat should be equal");
+        }
+
         // create new user and save it to DB
         User user = new User();
         user.setId(null);

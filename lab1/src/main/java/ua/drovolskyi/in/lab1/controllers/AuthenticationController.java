@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.drovolskyi.in.lab1.dto.AuthenticationDto;
 import ua.drovolskyi.in.lab1.dto.RegistrationDto;
 import ua.drovolskyi.in.lab1.dto.UserDto;
@@ -37,15 +38,14 @@ public class AuthenticationController {
     // method that is invoked when user submit the 'login form'
     @PostMapping("/login")
     public ModelAndView login(@Valid AuthenticationDto authDto,
-                              HttpSession session){
+                              HttpSession session, RedirectAttributes redirectAttrs){
         try{
             authenticationService.authenticateUser(authDto, session);
             return new ModelAndView("redirect:/");
         }
         catch(AuthException e) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("prevAuthAttemptError", e.getMessage());
-            return modelAndView;
+            redirectAttrs.addFlashAttribute("prevAuthAttemptError", e.getMessage());
+            return new ModelAndView("redirect:/login");
         }
     }
 
@@ -93,7 +93,7 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     public ModelAndView register(@Valid RegistrationDto registerDto,
-                              HttpSession session){
+                              HttpSession session, RedirectAttributes redirectAttrs){
         try{
             authenticationService.registerUser(registerDto);
             authenticationService.authenticateUser(
@@ -103,9 +103,8 @@ public class AuthenticationController {
             return new ModelAndView("redirect:/");
         }
         catch(Exception e) {
-            ModelAndView modelAndView = new ModelAndView("register");
-            modelAndView.addObject("prevRegisterAttemptError", e.getMessage());
-            return modelAndView;
+            redirectAttrs.addFlashAttribute("prevRegisterAttemptError", e.getMessage());
+            return new ModelAndView("redirect:/register");
         }
     }
 }

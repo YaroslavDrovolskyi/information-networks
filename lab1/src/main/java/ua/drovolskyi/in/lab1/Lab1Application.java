@@ -20,7 +20,6 @@ public class Lab1Application {
 TODO:
 + make registration (Service, Controller)
 JSP for login, registration, jsp for BookOrder satisfying and completion
-Registration page also needs "prevAttemptError"
 XSS attack protection
 Template UI items (top panel etc.)
 static web-pages ("about company" page (maybe with local images))

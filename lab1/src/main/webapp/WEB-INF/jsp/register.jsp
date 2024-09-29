@@ -32,7 +32,14 @@
                        pattern="^\S+$" minLength="8" maxLength="50" class="form-control col"/>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-5">
+                <label class="col-2 text-end">Repeat password</label>
+                <input name="passwordRepeat" type="password" required placeholder="password"
+                       pattern="^\S+$" minLength="8" maxLength="50" class="form-control col"/>
+            </div>
+            
+
+            <div class="row mb-3 mt-3">
                 <label class="col-2 text-end">Name</label>
                 <input name="name" type="text" required
                        pattern="^(?!\s*$).+" minLength="2" maxLength="50" class="form-control col"/>
