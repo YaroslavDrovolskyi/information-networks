@@ -19,7 +19,6 @@ public class Lab1Application {
 /*
 TODO:
 XSS attack protection
-static web-pages ("about company" page (maybe with local images))
 add icon
 ERROR handler
 
