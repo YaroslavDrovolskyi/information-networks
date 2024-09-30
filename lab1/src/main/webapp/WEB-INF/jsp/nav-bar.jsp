@@ -48,7 +48,7 @@
                     <div class="navbar-nav flex-row">
                         <a href="${pageContext.request.contextPath}/user/${sessionScope.authenticatedUser.id}"
                            class="nav-item nav-link p-2 mb-0">
-                            <button class="btn btn-primary"> Profile (${sessionScope.authenticatedUser.login}) </button>
+                            <button class="btn btn-primary"> Profile (<c:out value="${sessionScope.authenticatedUser.login}"/>) </button>
                         </a>
                     </div>
 
@@ -82,7 +82,7 @@
                     <div class="navbar-nav flex-row">
                         <a href="${pageContext.request.contextPath}/user/${sessionScope.authenticatedUser.id}"
                            class="nav-item nav-link p-2 mb-0">
-                            <button class="btn btn-primary"> Profile (${sessionScope.authenticatedUser.login}) </button>
+                            <button class="btn btn-primary"> Profile (<c:out value="${sessionScope.authenticatedUser.login}"/>) </button>
                         </a>
                     </div>
 
@@ -116,7 +116,7 @@
                     <div class="navbar-nav flex-row">
                         <a href="${pageContext.request.contextPath}/user/${sessionScope.authenticatedUser.id}"
                            class="nav-item nav-link p-2 mb-0">
-                            <button class="btn btn-primary"> Profile (${sessionScope.authenticatedUser.login}) </button>
+                            <button class="btn btn-primary"> Profile (<c:out value="${sessionScope.authenticatedUser.login}"/>) </button>
                         </a>
                     </div>
 

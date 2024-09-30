@@ -97,6 +97,24 @@
                 </form>
             </div>
         </c:if>
+
+        <c:if test="${sessionScope.authenticatedUser.role == 'ADMIN'}"> <!-- Only ADMIN can change Book quantity -->
+            <div class="row justify-content-center mt-3 mb-5">
+                <form action="${pageContext.request.contextPath}/book/changeQuantity"
+                      method="POST" id="changeBookQuantityForm" role="form">
+                    <div class="form-group col-xs-5 text-center">
+                        <input type="hidden" name="bookId" value="${book.id}" />
+                        <div class="row mb-3">
+                            <label class="col-6 text-end"><b>Quantity delta</b> (can be +/-)</label>
+                            <input name="quantityDelta" type="number" required
+                                   min="${(-1) * book.quantity}" max="100000" step="1" value="0" class="form-control col"/>
+                        </div>
+
+                        <button type="submit" class="btn btn-success" value="Create">Change!</button>
+                    </div>
+                </form>
+            </div>
+        </c:if>
     </c:if>
 </div>
 

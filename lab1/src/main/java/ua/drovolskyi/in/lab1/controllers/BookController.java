@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.drovolskyi.in.lab1.converters.BookToDtoConverter;
 import ua.drovolskyi.in.lab1.dto.BookDto;
+import ua.drovolskyi.in.lab1.dto.ChangeBookQuantityDto;
 import ua.drovolskyi.in.lab1.entities.Book;
 import ua.drovolskyi.in.lab1.entities.User;
 import ua.drovolskyi.in.lab1.errors.AccessDeniedException;
@@ -89,6 +90,22 @@ public class BookController {
         Book createdBook = bookService.createBook(createBookDto);
 
         return new ModelAndView(String.format("redirect:/book/%d", createdBook.getId()));
+    }
+
+    @PostMapping("/book/changeQuantity")
+    public ModelAndView changeBookQuantity(@Valid ChangeBookQuantityDto dto,
+                                           HttpSession session){
+        if(!authService.isAuthenticatedUser(session)) {
+            return new ModelAndView("redirect:/login");
+        }
+        User user = authService.getUserOfSession(session);
+        if(user.getRole() != User.Role.ADMIN){
+            throw new AccessDeniedException("You can't change quantity of book!");
+        }
+
+        bookService.changeQuantity(dto);
+
+        return new ModelAndView(String.format("redirect:/book/%d", dto.getBookId()));
     }
 
 }
