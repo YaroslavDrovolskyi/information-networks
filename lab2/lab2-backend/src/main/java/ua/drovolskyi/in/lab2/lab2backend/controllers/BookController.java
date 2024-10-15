@@ -64,8 +64,8 @@ public class BookController {
     // pageIndex is zero-based
     @GetMapping(value = "/books/all", params = {"pageIndex", "pageSize"})
     public ResponseEntity<PageDto<BookDto>> getAllBooksPage(
-            @NonNull @PositiveOrZero @RequestParam(name="pageIndex") Integer pageIndex,
-            @NonNull @Positive @RequestParam(name="pageSize") Integer pageSize){
+            @RequestParam(name="pageIndex") Integer pageIndex,
+            @RequestParam(name="pageSize") Integer pageSize){
         log.info(String.format("Received GET request to '/books/all', pageIndex=%d, pageSize=%d",
                 pageIndex, pageSize));
 
@@ -77,6 +77,7 @@ public class BookController {
 
     @PostMapping("/book/create")
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookDto createBookDto){
+        log.info("Received POST request to '/book/create'");
         Book createdBook = bookService.createBook(createBookDto);
         BookDto createdBookDto = bookToDtoConverter.convert(createdBook);
 
@@ -85,6 +86,7 @@ public class BookController {
 
     @PostMapping("/book/changeQuantity")
     public ResponseEntity<BookDto> changeBookQuantity(@Valid @RequestBody ChangeBookQuantityDto dto){
+        log.info("Received POST request to '/book/changeQuantity'");
         Book editedBook = bookService.changeQuantity(dto);
         BookDto editedBookDto = bookToDtoConverter.convert(editedBook);
 

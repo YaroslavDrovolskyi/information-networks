@@ -59,9 +59,9 @@ public class BookService {
 
         Book book = new Book();
         book.setId(null);
-        book.setIsbn(bookDto.getIsbn());
-        book.setTitle(bookDto.getTitle());
-        book.setAuthors(bookDto.getAuthors());
+        book.setIsbn(bookDto.getIsbn().trim());
+        book.setTitle(bookDto.getTitle().trim());
+        book.setAuthors(bookDto.getAuthors().trim());
         book.setNumberOfPages(bookDto.getNumberOfPages());
         book.setPublishingYear(bookDto.getPublishingYear());
         book.setQuantity(0);
