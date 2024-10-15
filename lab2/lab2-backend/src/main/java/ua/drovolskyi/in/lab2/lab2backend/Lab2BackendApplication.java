@@ -10,17 +10,14 @@ import ua.drovolskyi.in.lab2.lab2backend.repositories.BookRepository;
 
 @SpringBootApplication
 public class Lab2BackendApplication {
-	static BookRepository bookRepository;
-	static BookOrderRepository bookOrderRepository;
-
 	public static void main(String[] args) {
-		Book b = new Book(1L, "isbn", "title", "authors", 100, 2000, 100);
-		System.out.println(b);
-
-		bookRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-
-
 		SpringApplication.run(Lab2BackendApplication.class, args);
 	}
 
 }
+
+/*
+D:\Repositories\information-networks\lab1\src\main\java/ua\drovolskyi\in\lab1\controllers
+D:\Repositories\information-networks\lab2\lab2-backend\src\main\java/ua\drovolskyi\in\lab2\lab2backend\controllers
+
+ */

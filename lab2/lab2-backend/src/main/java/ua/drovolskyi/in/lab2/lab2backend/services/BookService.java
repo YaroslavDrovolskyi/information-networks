@@ -18,8 +18,11 @@ import java.util.List;
 
 @Service
 public class BookService {
-    @Autowired
     private BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public Book getBookById(Long id){
         Book book = bookRepository.findById(id).orElse(null);
@@ -71,7 +74,7 @@ public class BookService {
     /**
      * Adds quantityDelta to quantity of book with ID == bookId.
      * If quantityDelta < 0, then quantity will be decreased
-     * @return
+     * @return edited book
      */
     @Transactional
     public Book changeQuantity(ChangeBookQuantityDto changeQuantityDto){

@@ -30,9 +30,16 @@ dependencies {
 	implementation 'jakarta.validation:jakarta.validation-api'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	implementation 'org.apache.logging.log4j:log4j-core'
+
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+configurations {
+	all*.exclude module : 'spring-boot-starter-logging'
+	all*.exclude module : 'logback-classic'
 }
