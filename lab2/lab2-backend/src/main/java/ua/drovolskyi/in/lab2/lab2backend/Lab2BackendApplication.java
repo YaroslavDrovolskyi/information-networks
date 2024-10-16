@@ -21,3 +21,15 @@ D:\Repositories\information-networks\lab1\src\main\java/ua\drovolskyi\in\lab1\co
 D:\Repositories\information-networks\lab2\lab2-backend\src\main\java/ua\drovolskyi\in\lab2\lab2backend\controllers
 
  */
+
+
+/*
+TODO:
+	test:
+		getBookOrdersByBook
+		getBookOrdersByBookPage
+		createBookOrder
+		satisfyBookOrder
+		completeBookOrder
+
+ */

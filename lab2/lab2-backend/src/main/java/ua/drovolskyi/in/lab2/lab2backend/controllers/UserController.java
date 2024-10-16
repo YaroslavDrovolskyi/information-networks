@@ -1,19 +1,15 @@
 package ua.drovolskyi.in.lab2.lab2backend.controllers;
 
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.drovolskyi.in.lab2.lab2backend.converters.PageToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.UserToDtoConverter;
-import ua.drovolskyi.in.lab2.lab2backend.dto.BookDto;
-import ua.drovolskyi.in.lab2.lab2backend.dto.PageDto;
-import ua.drovolskyi.in.lab2.lab2backend.dto.UserDto;
+import ua.drovolskyi.in.lab2.lab2backend.dto.*;
 import ua.drovolskyi.in.lab2.lab2backend.entities.Book;
 import ua.drovolskyi.in.lab2.lab2backend.entities.User;
 import ua.drovolskyi.in.lab2.lab2backend.services.UserService;
@@ -111,6 +107,27 @@ public class UserController {
         PageDto<UserDto> pageDto = userPageToDtoConverter.convert(page);
 
         return new ResponseEntity<>(pageDto, HttpStatus.OK);
+    }
+
+
+    @PatchMapping(value = "/user/setRole")
+    public ResponseEntity<UserDto> setUserRole(
+            @Valid @RequestBody SetUserRoleDto dto
+    ){
+        User editedUser = userService.setUserRole(dto);
+        UserDto editedUserDto = userToDtoConverter.convert(editedUser);
+
+        return new ResponseEntity<>(editedUserDto, HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/user/setIsAllowedToLogin")
+    public ResponseEntity<UserDto> setUserIsAllowedToLogin(
+            @Valid @RequestBody SetUserIsAllowedToLoginDto dto
+    ){
+        User editedUser = userService.setUserIsAllowedToLogin(dto);
+        UserDto editedUserDto = userToDtoConverter.convert(editedUser);
+
+        return new ResponseEntity<>(editedUserDto, HttpStatus.OK);
     }
 
 }

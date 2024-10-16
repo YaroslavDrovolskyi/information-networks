@@ -135,7 +135,7 @@ public class BookOrderService {
     // when user take the book
     // current status can be only NEW
     @Transactional
-    public void satisfyBookOrder(Long bookOrderId){
+    public BookOrder satisfyBookOrder(Long bookOrderId){
         BookOrder bookOrder = getBookOrderById(bookOrderId);
         if(bookOrder.getStatus() != BookOrder.Status.NEW){ // check if status == NEW
             throw new IllegalArgumentException(
@@ -153,12 +153,14 @@ public class BookOrderService {
         bookOrderRepository.save(bookOrder);
         book.setQuantity(book.getQuantity() - 1);
         bookRepository.save(book);
+
+        return bookOrder;
     }
 
     // when user returns the book
     // current status can be only SATISFIED
     @Transactional
-    public void completeBookOrder(Long bookOrderId){
+    public BookOrder completeBookOrder(Long bookOrderId){
         BookOrder bookOrder = getBookOrderById(bookOrderId);
         if(bookOrder.getStatus() != BookOrder.Status.SATISFIED){ // check if status == SATISFIED
             throw new IllegalArgumentException(
@@ -171,5 +173,7 @@ public class BookOrderService {
         bookOrderRepository.save(bookOrder);
         book.setQuantity(book.getQuantity() + 1);
         bookRepository.save(book);
+
+        return bookOrder;
     }
 }

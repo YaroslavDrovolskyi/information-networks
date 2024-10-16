@@ -84,7 +84,7 @@ public class BookController {
         return new ResponseEntity<>(createdBookDto, HttpStatus.OK);
     }
 
-    @PostMapping("/book/changeQuantity")
+    @PatchMapping("/book/changeQuantity")
     public ResponseEntity<BookDto> changeBookQuantity(@Valid @RequestBody ChangeBookQuantityDto dto){
         log.info("Received POST request to '/book/changeQuantity'");
         Book editedBook = bookService.changeQuantity(dto);
