@@ -28,13 +28,8 @@ TODO:
 	Security into ExceptionHandler - check
 	add roles restrictions
 
-	test createBookOrder
-
 	fill form about start
 	cancelSatisfyBookOrder
 	cancelCompleteBookOrder
 	setBookLostBookOrder
-	To fix:
-	- createBookOrder: customerID is hardcoded, need to get it using Authorization
-	- getUser: customer can access only own profile
  */

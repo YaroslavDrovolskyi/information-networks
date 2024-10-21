@@ -30,6 +30,16 @@ public class AuthService {
         return username;
     }
 
+    /**
+     * Returns current authenticated user.
+     * Returns null, only if open (authentication is not required) endpoint is accessed
+     * @return
+     */
+    public User getAuthenticatedUser(){
+        String username = getAuthenticatedUserUsername();
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
 
     /**
      * Registers new user wit CUSTOMER role.

@@ -51,6 +51,13 @@ public class UserController {
     ){
         log.info("Received GET request to '/user', ID = " + id);
 
+        User authenticatedUser = authService.getAuthenticatedUser();
+        if(authenticatedUser.getRole() == User.Role.CUSTOMER){
+            if(!authenticatedUser.getId().equals(id)){
+                throw new IllegalArgumentException("CUSTOMER can get only own info");
+            }
+        }
+
         User user = userService.getUserById(id);
         UserDto userDto = userToDtoConverter.convert(user);
 
@@ -62,6 +69,13 @@ public class UserController {
             @RequestParam(name="username") String username
     ){
         log.info("Received GET request to '/user', username = " + username);
+
+        User authenticatedUser = authService.getAuthenticatedUser();
+        if(authenticatedUser.getRole() == User.Role.CUSTOMER){
+            if(!authenticatedUser.getUsername().equals(username)){
+                throw new IllegalArgumentException("CUSTOMER can get only own info");
+            }
+        }
 
         User user = userService.getUserByUsername(username);
         UserDto userDto = userToDtoConverter.convert(user);

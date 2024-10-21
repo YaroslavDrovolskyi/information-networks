@@ -12,6 +12,7 @@ import ua.drovolskyi.in.lab2.lab2backend.converters.BookToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.PageToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.dto.*;
 import ua.drovolskyi.in.lab2.lab2backend.entities.BookOrder;
+import ua.drovolskyi.in.lab2.lab2backend.services.AuthService;
 import ua.drovolskyi.in.lab2.lab2backend.services.BookOrderService;
 
 import java.util.List;
@@ -20,13 +21,15 @@ import java.util.List;
 public class BookOrderController {
     private static final Logger log = LogManager.getLogger();
     private BookOrderService bookOrderService;
+    private AuthService authService;
     private final BookOrderToDtoConverter bookOrderToDtoConverter = new BookOrderToDtoConverter();
     private final BookToDtoConverter bookToDtoConverter = new BookToDtoConverter();
     private final PageToDtoConverter<BookOrder, BookOrderDto> bookOrderPageToDtoConverter
             = new PageToDtoConverter<>(bookOrderToDtoConverter);
 
-    public BookOrderController(BookOrderService bookOrderService){
+    public BookOrderController(BookOrderService bookOrderService, AuthService authService){
         this.bookOrderService = bookOrderService;
+        this.authService = authService;
     }
 
 
@@ -159,14 +162,12 @@ public class BookOrderController {
     }
 
 
-    ///////////////////////////////////////// CUSTOMER_ID is HARDCODED
-    // customer ID will be taken from authorization info
     @PostMapping("/bookOrder/create")
     public ResponseEntity<BookOrderDto> createBookOrder(
             @Valid @RequestBody CreateBookOrderDto dto
     ) {
         log.info("Received POST request to '/bookOrder/create'");
-        Long customerId = 5L; ///////////////////////////////////////////////////////////////////////////
+        Long customerId = authService.getAuthenticatedUser().getId();
         BookOrder createdBookOrder = bookOrderService.createBookOrder(dto.getBookId(), customerId);
         BookOrderDto createdBookOrderDto = bookOrderToDtoConverter.convert(createdBookOrder);
 
