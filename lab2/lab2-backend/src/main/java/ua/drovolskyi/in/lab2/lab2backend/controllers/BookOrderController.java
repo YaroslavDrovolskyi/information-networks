@@ -129,7 +129,7 @@ public class BookOrderController {
     }
 
 
-    @GetMapping(value = "/bookOrders/getByBookOrderBook", params = {"bookId"})
+    @GetMapping(value = "/bookOrders/byBook", params = {"bookId"})
     public ResponseEntity<List<BookOrderDto>> getBookOrdersByBook(
             @RequestParam(name= "bookId") Long bookId
     ) {
@@ -143,7 +143,7 @@ public class BookOrderController {
         return new ResponseEntity<>(bookOrdersDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/bookOrders/byBookId", params = {"bookId", "pageIndex", "pageSize"})
+    @GetMapping(value = "/bookOrders/byBook", params = {"bookId", "pageIndex", "pageSize"})
     public ResponseEntity<PageDto<BookOrderDto>> getBookOrdersByBookPage(
             @RequestParam(name= "bookId") Long bookId,
             @RequestParam(name="pageIndex") Integer pageIndex,

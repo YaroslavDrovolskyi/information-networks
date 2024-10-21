@@ -34,7 +34,8 @@ public class BookOrder {
     public static enum Status {
         NEW, // customer created order
         SATISFIED, // customer took the book
-        COMPLETED // customer returned the book
+        COMPLETED, // customer returned the book
+        BOOK_LOST // customer took the book, and lost it
     }
 
 

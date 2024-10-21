@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ua.drovolskyi.in.lab2.lab2backend.converters.PageToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.UserToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.dto.*;
-import ua.drovolskyi.in.lab2.lab2backend.entities.Book;
 import ua.drovolskyi.in.lab2.lab2backend.entities.User;
+import ua.drovolskyi.in.lab2.lab2backend.services.AuthService;
 import ua.drovolskyi.in.lab2.lab2backend.services.UserService;
 
 import java.util.List;
@@ -20,14 +20,30 @@ import java.util.List;
 public class UserController {
     private static final Logger log = LogManager.getLogger();
     private UserService userService;
+    private AuthService authService;
     private final UserToDtoConverter userToDtoConverter = new UserToDtoConverter();
     private final PageToDtoConverter<User, UserDto> userPageToDtoConverter
             = new PageToDtoConverter<>(userToDtoConverter);
 
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
+
+
+    @GetMapping(value = "/currentUser")
+    public ResponseEntity<UserDto> getAuthenticatedUser(){
+        String authenticatedUserUsername = authService.getAuthenticatedUserUsername();
+
+        log.info("Received GET request to '/currentUser', username='" + authenticatedUserUsername + "'");
+
+        User user = userService.getUserByUsername(authenticatedUserUsername);
+        UserDto userDto = userToDtoConverter.convert(user);
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUserById(

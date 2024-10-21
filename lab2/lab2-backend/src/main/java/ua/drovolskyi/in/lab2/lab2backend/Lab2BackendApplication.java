@@ -25,11 +25,16 @@ D:\Repositories\information-networks\lab2\lab2-backend\src\main\java/ua\drovolsk
 
 /*
 TODO:
-	test:
-		getBookOrdersByBook
-		getBookOrdersByBookPage
-		createBookOrder
-		satisfyBookOrder
-		completeBookOrder
+	Security into ExceptionHandler - check
+	add roles restrictions
 
+	test createBookOrder
+
+	fill form about start
+	cancelSatisfyBookOrder
+	cancelCompleteBookOrder
+	setBookLostBookOrder
+	To fix:
+	- createBookOrder: customerID is hardcoded, need to get it using Authorization
+	- getUser: customer can access only own profile
  */

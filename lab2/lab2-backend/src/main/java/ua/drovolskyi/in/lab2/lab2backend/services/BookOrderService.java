@@ -100,7 +100,7 @@ public class BookOrderService {
         );
     }
 
-
+    // customer creates order
     @Transactional
     public BookOrder createBookOrder(Long bookId, Long customerId){
         // get customer

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -124,7 +125,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     /**
      This handler is triggered when user has role, that not allowed to call endpoint
      */
-/*    @ExceptionHandler({ AccessDeniedException.class })
+    @ExceptionHandler({ AccessDeniedException.class })
     protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
 
         ApiError apiError = new ApiError(HttpStatus.FORBIDDEN,
@@ -133,7 +134,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
-    }*/
+    }
 
     /**
      * This handles another exceptions
