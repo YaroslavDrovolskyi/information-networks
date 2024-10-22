@@ -6,12 +6,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.drovolskyi.in.lab2.lab2backend.converters.BookOrderToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.BookToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.PageToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.dto.*;
 import ua.drovolskyi.in.lab2.lab2backend.entities.BookOrder;
+import ua.drovolskyi.in.lab2.lab2backend.entities.User;
 import ua.drovolskyi.in.lab2.lab2backend.services.AuthService;
 import ua.drovolskyi.in.lab2.lab2backend.services.BookOrderService;
 
@@ -42,10 +44,19 @@ public class BookOrderController {
         BookOrder bookOrder = bookOrderService.getBookOrderById(id);
         BookOrderDto bookOrderDto = bookOrderToDtoConverter.convert(bookOrder);
 
+        User authenticatedUser = authService.getAuthenticatedUser();
+        if(authenticatedUser.getRole() == User.Role.CUSTOMER){
+            if(!authenticatedUser.getId().equals(bookOrder.getCustomer().getId())){
+                throw new IllegalArgumentException("CUSTOMER can get only own BookOrder info");
+            }
+        }
+
+
         return new ResponseEntity<>(bookOrderDto, HttpStatus.OK);
     }
 
     @GetMapping("/bookOrders/all")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<List<BookOrderDto>> getAllBookOrders() {
         log.info("Received GET request to '/bookOrders/all'");
 
@@ -58,6 +69,7 @@ public class BookOrderController {
     }
 
     @GetMapping(value = "/bookOrders/all", params = {"pageIndex", "pageSize"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<PageDto<BookOrderDto>> getAllBookOrdersPage(
             @RequestParam(name="pageIndex") Integer pageIndex,
             @RequestParam(name="pageSize") Integer pageSize
@@ -73,6 +85,7 @@ public class BookOrderController {
 
 
     @GetMapping(value = "/bookOrders/byBookOrderStatus", params = {"status"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<List<BookOrderDto>> getBookOrdersByStatus(
             @RequestParam(name="status") BookOrder.Status status
     ) {
@@ -87,6 +100,7 @@ public class BookOrderController {
     }
 
     @GetMapping(value = "/bookOrders/byBookOrderStatus", params = {"status", "pageIndex", "pageSize"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<PageDto<BookOrderDto>> getBookOrdersByStatusPage(
             @RequestParam(name="status") BookOrder.Status status,
             @RequestParam(name="pageIndex") Integer pageIndex,
@@ -108,6 +122,14 @@ public class BookOrderController {
     ) {
         log.info("Received GET request to '/bookOrders/byCustomer', customerId=" + customerId);
 
+        User authenticatedUser = authService.getAuthenticatedUser();
+        if(authenticatedUser.getRole() == User.Role.CUSTOMER){
+            if(!authenticatedUser.getId().equals(customerId)){
+                throw new IllegalArgumentException("CUSTOMER can get only own BookOrder info");
+            }
+        }
+
+
         List<BookOrderDto> bookOrdersDto = bookOrderService.getAllBookOrdersByCustomer(customerId)
                 .stream()
                 .map(bookOrderToDtoConverter::convert)
@@ -125,6 +147,14 @@ public class BookOrderController {
         log.info(String.format("Received GET request to '/bookOrders/byCustomer', customerId=%d, pageIndex=%d, pageSize=%d",
                 customerId, pageIndex, pageSize));
 
+        User authenticatedUser = authService.getAuthenticatedUser();
+        if(authenticatedUser.getRole() == User.Role.CUSTOMER){
+            if(!authenticatedUser.getId().equals(customerId)){
+                throw new IllegalArgumentException("CUSTOMER can get only own BookOrder info");
+            }
+        }
+        
+
         Page<BookOrder> page = bookOrderService.getAllBookOrdersByCustomerPage(customerId, pageIndex, pageSize);
         PageDto<BookOrderDto> pageDto = bookOrderPageToDtoConverter.convert(page);
 
@@ -133,6 +163,7 @@ public class BookOrderController {
 
 
     @GetMapping(value = "/bookOrders/byBook", params = {"bookId"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<List<BookOrderDto>> getBookOrdersByBook(
             @RequestParam(name= "bookId") Long bookId
     ) {
@@ -147,6 +178,7 @@ public class BookOrderController {
     }
 
     @GetMapping(value = "/bookOrders/byBook", params = {"bookId", "pageIndex", "pageSize"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<PageDto<BookOrderDto>> getBookOrdersByBookPage(
             @RequestParam(name= "bookId") Long bookId,
             @RequestParam(name="pageIndex") Integer pageIndex,
@@ -163,6 +195,7 @@ public class BookOrderController {
 
 
     @PostMapping("/bookOrder/create")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<BookOrderDto> createBookOrder(
             @Valid @RequestBody CreateBookOrderDto dto
     ) {
@@ -177,6 +210,7 @@ public class BookOrderController {
 
     // book quantity--
     @PatchMapping("/bookOrder/{id}/satisfy")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<BookOrderDto> satisfyBookOrder(
             @PathVariable(name="id") Long bookOrderId
     ){
@@ -188,6 +222,7 @@ public class BookOrderController {
 
     // book quantity++
     @PatchMapping("/bookOrder/{id}/complete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<BookOrderDto> completeBookOrder(
             @PathVariable(name="id") Long bookOrderId
     ){

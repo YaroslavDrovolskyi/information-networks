@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.drovolskyi.in.lab2.lab2backend.converters.PageToDtoConverter;
 import ua.drovolskyi.in.lab2.lab2backend.converters.UserToDtoConverter;
@@ -84,6 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/users/all")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         log.info("Received GET request to '/users/all'");
 
@@ -96,6 +98,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/all", params = {"pageIndex", "pageSize"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<PageDto<UserDto>> getAllUsersPage(
             @RequestParam(name="pageIndex") Integer pageIndex,
             @RequestParam(name="pageSize") Integer pageSize
@@ -111,6 +114,7 @@ public class UserController {
 
 
     @GetMapping(value = "/users/byRole", params = {"role"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<List<UserDto>> getUsersByRole(
             @RequestParam(name="role") User.Role role
     ) {
@@ -125,6 +129,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/byRole", params = {"role", "pageIndex", "pageSize"})
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     public ResponseEntity<PageDto<UserDto>> getUsersByRolePage(
             @RequestParam(name="role") User.Role role,
             @RequestParam(name="pageIndex") Integer pageIndex,
@@ -141,6 +146,7 @@ public class UserController {
 
 
     @PatchMapping(value = "/user/setRole")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<UserDto> setUserRole(
             @Valid @RequestBody SetUserRoleDto dto
     ){
@@ -151,6 +157,7 @@ public class UserController {
     }
 
     @PatchMapping(value = "/user/setIsAllowedToLogin")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<UserDto> setUserIsAllowedToLogin(
             @Valid @RequestBody SetUserIsAllowedToLoginDto dto
     ){

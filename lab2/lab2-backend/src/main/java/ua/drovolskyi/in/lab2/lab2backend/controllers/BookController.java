@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.drovolskyi.in.lab2.lab2backend.converters.BookToDtoConverter;
@@ -76,6 +77,7 @@ public class BookController {
     }
 
     @PostMapping("/book/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookDto createBookDto){
         log.info("Received POST request to '/book/create'");
         Book createdBook = bookService.createBook(createBookDto);
@@ -85,6 +87,7 @@ public class BookController {
     }
 
     @PatchMapping("/book/changeQuantity")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<BookDto> changeBookQuantity(@Valid @RequestBody ChangeBookQuantityDto dto){
         log.info("Received POST request to '/book/changeQuantity'");
         Book editedBook = bookService.changeQuantity(dto);
