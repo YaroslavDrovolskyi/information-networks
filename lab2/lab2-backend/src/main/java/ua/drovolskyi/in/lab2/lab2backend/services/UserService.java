@@ -70,6 +70,10 @@ public class UserService {
     }
 
     public User setUserRole(SetUserRoleDto dto){
+        if(dto.getRole() == User.Role.OWNER){
+            throw new IllegalArgumentException("Setting role to OWNER is not allowed");
+        }
+
         User user = getUserById(dto.getUserId());
         user.setRole(dto.getRole());
 

@@ -59,7 +59,12 @@ public class BookService {
 
         Book book = new Book();
         book.setId(null);
-        book.setIsbn(bookDto.getIsbn().trim());
+
+        if(bookDto.getIsbn() != null){
+            if(!bookDto.getIsbn().trim().equals("")){
+                book.setIsbn(bookDto.getIsbn().trim());
+            }
+        }
         book.setTitle(bookDto.getTitle().trim());
         book.setAuthors(bookDto.getAuthors().trim());
         book.setNumberOfPages(bookDto.getNumberOfPages());
